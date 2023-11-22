@@ -1,1 +1,0 @@
-# Stolni-tenis-pong
