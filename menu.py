@@ -18,6 +18,10 @@ game_options_background_path = os.path.join("pozadina_options.jpg")
 game_options_background = pygame.image.load(game_options_background_path)
 game_options_background = pygame.transform.scale(game_options_background, (screen_width, screen_height))
 
+game_instructions_background_path = os.path.join("pozadina_upute.jpg")
+game_instructions_background = pygame.image.load(game_instructions_background_path)
+game_instructions_background = pygame.transform.scale(game_instructions_background, (screen_width, screen_height))
+
 # Za promjenu pozadine
 current_screen = "start"
 
@@ -34,15 +38,6 @@ def draw_text(text, x, y, color=white):
     text_rect = text_surface.get_rect(center=(x, y))
     screen.blit(text_surface, text_rect)
     
-# Sound effect za gumbe
-def play_click_sound():
-    button_click_sound.play()
-
-def draw_text(text, x, y, color=white):
-    text_surface = font.render(text, True, color)
-    text_rect = text_surface.get_rect(center=(x, y))
-    screen.blit(text_surface, text_rect)
-
 # Crtanje gumba
 def draw_button(text, x, y, width, height, button_color, hover_color, action=None):
     mouse = pygame.mouse.get_pos()
@@ -60,7 +55,7 @@ def draw_button(text, x, y, width, height, button_color, hover_color, action=Non
 
 # Akcije gumba
 def start_game():
-    global current_screen, game_started
+    global current_screen
     current_screen = "options"
 
 # Igranje igrač protiv igrača
@@ -83,6 +78,25 @@ def options():
 def achievements():
     print("Prikaži postignuća")
 
+def upute():
+    global current_screen
+    current_screen = "upute"
+    
+    # Upute
+    upute_text = [
+        "Upute:",
+        "1. Pritisnite 'Kreni' za početak igre.",
+        "2. Pritisnite '1v1' ili '1 vs Bot' kako biste započeli igru."
+    ]
+
+    y_offset = screen_height // 4 + 20
+    for line in upute_text:
+        text_surface = font.render(line, True, black)
+        text_rect = text_surface.get_rect(center=(screen_width // 2, y_offset))
+        screen.blit(text_surface, text_rect)
+        y_offset += 30
+
+
 def exit_game():
     pygame.quit()
     sys.exit()
@@ -101,13 +115,19 @@ while True:
     if current_screen == "start":
         screen.blit(background_image, (0, 0))
         draw_button("Kreni", screen_width // 2 - 100, 200, 200, 50, button_color, white, start_game)
-        draw_button("Opcije", screen_width // 2 - 100, 200 + 50 + 20, 200, 50, button_color, white, options)
-        draw_button("Postignuća", screen_width // 2 - 100, 200 + 2 * (50 + 20), 200, 50, button_color, white, achievements)
-        draw_button("Izađi", screen_width // 2 - 100, 200 + 3 * (50 + 20), 200, 50, button_color, white, exit_game)
+        draw_button("Upute", screen_width // 2 - 100, 200 + 50 + 20, 200, 50, button_color, white, upute)
+        draw_button("Opcije", screen_width // 2 - 100, 200 + 2 * (50 + 20), 200, 50, button_color, white, options)
+        draw_button("Postignuća", screen_width // 2 - 100, 200 + 3 * (50 + 20), 200, 50, button_color, white, achievements)
+        draw_button("Izađi", screen_width // 2 - 100, 200 + 5 * (50 + 20), 200, 50, button_color, white, exit_game)
     elif current_screen == "options":
         screen.blit(game_options_background, (0, 0))
         draw_button("1v1", screen_width // 4 - 100, 400, 200, 50, button_color, white, start_1vs1_game)
         draw_button("1 vs Bot", 3 * screen_width // 4 - 100, 400, 200, 50, button_color, white, start_vs_bot_game)
         draw_button("Povratak", screen_width // 2 - 100, 500, 200, 50, button_color, white, return_to_start)
+    elif current_screen == "upute":
+        screen.blit(game_instructions_background, (0, 0))
+        upute()
+        draw_button("Povratak", screen_width // 2 - 100, 500, 200, 50, button_color, white, return_to_start)
+        
 
     pygame.display.flip()
