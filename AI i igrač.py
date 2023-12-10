@@ -17,7 +17,7 @@ fps = 60
 # Postavke igrača
 player_radius = 40
 player_speed = 6
-player1_color = (0, 0, 255)  # Plava boja
+player1_color = (0, 255, 0)  # Zelena boja
 player2_color = (255, 0, 0)  # Crvena boja
 player1 = pygame.Rect(50, height // 2 - player_radius, 2 * player_radius, 2 * player_radius)
 player2 = pygame.Rect(width - 50 - player_radius * 2, height // 2 - player_radius, 2 * player_radius, 2 * player_radius)
