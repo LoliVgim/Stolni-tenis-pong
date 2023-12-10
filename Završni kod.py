@@ -297,7 +297,7 @@ def start_vs_bot_game():
     player2 = pygame.Rect(width - 50 - player_radius * 2, height // 2 - player_radius, 2 * player_radius, 2 * player_radius)
 
     # Postavke AI igrača
-    ai_speed = 6
+    ai_speed = 7
 
 # Postavke lopte
     ball_size = 30  # Povećana veličina lopte
