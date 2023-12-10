@@ -50,8 +50,6 @@ max_score = 11  # Maksimalan broj poena za pobjedu u igri
 # Dodatna postavka za provjeru servisa
 is_serving = False
 
-# Dodatna postavka za provjeru servisa
-is_serving = False
 
 # Glavna petlja igre
 while True:
