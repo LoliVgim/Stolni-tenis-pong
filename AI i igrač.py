@@ -6,7 +6,7 @@ import random
 pygame.init()
 
 # Postavke prozora
-width, height = 1280, 700
+width, height = 1280, 720
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Stolni Tenis")
 
