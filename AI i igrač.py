@@ -23,7 +23,7 @@ player1 = pygame.Rect(50, height // 2 - player_radius, 2 * player_radius, 2 * pl
 player2 = pygame.Rect(width - 50 - player_radius * 2, height // 2 - player_radius, 2 * player_radius, 2 * player_radius)
 
 # Postavke AI igrača
-ai_speed = 7
+ai_speed = 6
 
 # Postavke lopte
 ball_size = 30  # Povećana veličina lopte
