@@ -519,11 +519,11 @@ def return_to_start():
     global current_screen
     current_screen = "start"
 
-def options():
-    print("Otvori opcije")
+#def options():
+    #print("Otvori opcije")
 
-def achievements():
-    print("Prikaži postignuća")
+#def achievements():
+    #print("Prikaži postignuća")
 
 def upute():
     global current_screen
@@ -533,7 +533,9 @@ def upute():
     upute_text = [
         "Upute:",
         "1. Pritisnite 'Kreni' za početak igre.",
-        "2. Pritisnite '1v1' ili '1 vs Bot' kako biste započeli igru."
+        "2. Pritisnite '1v1' ili '1 vs Bot' kako biste započeli igru.",
+        "3. Kontrole za lijevog igrača: CRTL + WSAD",
+        "4. Kontrole za desnog igrača: Space + strelice"
     ]
 
     y_offset = screen_height // 4 + 20
@@ -561,10 +563,10 @@ while True:
     # Pozadine
     if current_screen == "start":
         screen.blit(background_image, (0, 0))
-        draw_button("Kreni", screen_width // 2 - 100, 200, 200, 50, button_color, white, start_game)
-        draw_button("Upute", screen_width // 2 - 100, 200 + 50 + 20, 200, 50, button_color, white, upute)
-        draw_button("Opcije", screen_width // 2 - 100, 200 + 2 * (50 + 20), 200, 50, button_color, white, options)
-        draw_button("Postignuća", screen_width // 2 - 100, 200 + 3 * (50 + 20), 200, 50, button_color, white, achievements)
+        draw_button("Kreni", screen_width // 2 - 100, 200 + (50 + 20), 200, 50, button_color, white, start_game)
+        draw_button("Upute", screen_width // 2 - 100, 200 + 2* (50 + 20), 200, 50, button_color, white, upute)
+        #draw_button("Opcije", screen_width // 2 - 100, 200 + 2 * (50 + 20), 200, 50, button_color, white, options)
+        #draw_button("Postignuća", screen_width // 2 - 100, 200 + 3 * (50 + 20), 200, 50, button_color, white, achievements)
         draw_button("Izađi", screen_width // 2 - 100, 200 + 5 * (50 + 20), 200, 50, button_color, white, exit_game)
     elif current_screen == "options":
         screen.blit(game_options_background, (0, 0))
