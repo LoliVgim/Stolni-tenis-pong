@@ -97,10 +97,11 @@ def start_1vs1_game():
     score_player2 = 0
     servis_count = 0
     max_servis_count = 2  # Broj servisa prije izmjene strane
-    max_score = 11  # Maksimalan broj poena za pobjedu u igri
+    max_score = 5  # Maksimalan broj poena za pobjedu u igri
 
     # Dodatna postavka za provjeru servisa
     is_serving = False
+    text_color =(0,0,0)
 
     # Glavna petlja igre
     while True:
@@ -213,9 +214,78 @@ def start_1vs1_game():
 
     # Provjera pobjednika
         if score_player1 == max_score or score_player2 == max_score:
-            print("Kraj igre!")
-            pygame.quit()
-            sys.exit()
+            winner_text = "Zeleni igrač je pobijedio!" if score_player1 == max_score else "Crveni igrač je pobijedio!"
+
+        # pozadina menija
+            menu_width = width // 2
+            menu_height = height // 2
+            menu_x = (width - menu_width) // 2
+            menu_y = (height - menu_height) // 2
+
+            pygame.draw.rect(screen, (128, 0, 128), (menu_x, menu_y, menu_width, menu_height))
+
+        # Prikaz menija
+            menu_font = pygame.font.Font(None, 60)
+            restart_text_surface = menu_font.render("Restart", True, text_color)
+            menu_text_surface = menu_font.render("Return to Menu", True, text_color)
+        
+        # Poruka koja pokazuje tko je pobijedio
+            winner_font = pygame.font.Font(None, 45)
+            winner_text_surface = winner_font.render(winner_text, True, text_color)
+            winner_text_rect = winner_text_surface.get_rect(center=(menu_x + menu_width // 2, menu_y + 50))
+            screen.blit(winner_text_surface, winner_text_rect.topleft)
+
+        # veličina gumbova
+            button_width = 400
+            button_height = 75
+
+            spacing = 20  
+
+            restart_text_rect = pygame.Rect((menu_x + menu_width // 2 - button_width // 2, menu_y + menu_height // 2 - button_height - spacing, button_width, button_height))
+            menu_text_rect = pygame.Rect((menu_x + menu_width // 2 - button_width // 2, menu_y + menu_height // 2 + spacing, button_width, button_height))
+
+            pygame.draw.rect(screen, element_color, restart_text_rect, 2)
+            pygame.draw.rect(screen, element_color, menu_text_rect, 2)
+
+        # Center-align 
+            restart_text_rect.topleft = (menu_x + menu_width // 2 - restart_text_surface.get_width() // 2, menu_y + menu_height // 2 - button_height - spacing)
+            screen.blit(restart_text_surface, restart_text_rect.topleft)
+
+            menu_text_rect.topleft = (menu_x + menu_width // 2 - menu_text_surface.get_width() // 2, menu_y + menu_height // 2 + spacing)
+            screen.blit(menu_text_surface, menu_text_rect.topleft)
+
+            pygame.display.flip()
+
+        # Čekanje igrača da klinu na meni
+            waiting_for_input = True
+            while waiting_for_input:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                    elif event.type == pygame.MOUSEBUTTONDOWN:
+                        mouse_pos = pygame.mouse.get_pos()
+
+                    # Provjera je li igrač kliknuo restart ili return to menu
+                        if restart_text_rect.collidepoint(mouse_pos):
+                            # Resetiranje rezultata
+                            score_player1 = 0
+                            score_player2 = 0
+                            servis_count = 0
+                            serve_player1 = True
+                            serve_player2 = False
+                            is_serving = False
+                            ball_direction = (0, 0)
+                            ball.x = width // 2 - ball_size // 2
+                            ball.y = height // 2 - ball_size // 2
+                            waiting_for_input = False
+                        elif menu_text_rect.collidepoint(mouse_pos):
+                             pygame.quit()
+                             sys.exit()
+                clock.tick(fps)
+    
+    
+            
 
     # Crtanje na ekran
         screen.fill(background_color)
@@ -265,7 +335,7 @@ def start_1vs1_game():
         pygame.draw.ellipse(screen, (255, 165, 0), ball)  # Orange boja lopte
 
 # Prikaz rezultata
-        font = pygame.font.Font(None, 36)
+        font = pygame.font.Font(None, 45)
         score_text = font.render(f"{score_player1} - {score_player2}", True, element_color)
         screen.blit(score_text, (width // 2 - score_text.get_width() // 2, 10))
 
@@ -319,7 +389,8 @@ def start_vs_bot_game():
     score_player2 = 0
     servis_count = 0
     max_servis_count = 2  # Broj servisa prije izmjene strane
-    max_score = 11  # Maksimalan broj poena za pobjedu u igri
+    max_score = 5  # Maksimalan broj poena za pobjedu u igri
+    text_color =(0,0,0)
 
 # Dodatna postavka za provjeru servisa
     is_serving = False
@@ -421,7 +492,7 @@ def start_vs_bot_game():
 
         # Resetiraj poziciju AI igrača i zaustavi ga na kratko vrijeme
             player2.y = height // 2 - player_radius
-            pygame.time.delay(500)  # Pause for 500 milliseconds (0.5 seconds)
+            pygame.time.delay(500)  
 
         elif ball.right >= width:
             score_player1 += 1
@@ -435,7 +506,7 @@ def start_vs_bot_game():
 
         # Resetiraj poziciju AI igrača i zaustavi ga na kratko vrijeme
             player2.y = height // 2 - player_radius
-            pygame.time.delay(500)  # Pause for 500 milliseconds (0.5 seconds)
+            pygame.time.delay(500)  
 
     # Izmjena strane nakon dva servisa
         if servis_count == max_servis_count:
@@ -444,15 +515,66 @@ def start_vs_bot_game():
 
     # Provjera pobjednika
         if score_player1 == max_score or score_player2 == max_score:
-            print("Kraj igre!")
-            pygame.quit()
-            sys.exit()
+            winner_text = "Zeleni igrač je pobijedio!" if score_player1 == max_score else "Crveni igrač je pobijedio!"
+
+        # pozadina menija
+            menu_width = width // 2
+            menu_height = height // 2
+            menu_x = (width - menu_width) // 2
+            menu_y = (height - menu_height) // 2
+
+            pygame.draw.rect(screen, (128, 0, 128), (menu_x, menu_y, menu_width, menu_height))
+
+        # Prikaz menija
+            menu_font = pygame.font.Font(None, 60)
+            restart_text_surface = menu_font.render("Restart", True, text_color)
+            menu_text_surface = menu_font.render("Return to Menu", True, text_color)
+        
+        # Poruka koja pokazuje tko je pobijedio
+            winner_font = pygame.font.Font(None, 45)
+            winner_text_surface = winner_font.render(winner_text, True, text_color)
+            winner_text_rect = winner_text_surface.get_rect(center=(menu_x + menu_width // 2, menu_y + 50))
+            screen.blit(winner_text_surface, winner_text_rect.topleft)
+
+        # veličina gumbova
+            button_width = 400
+            button_height = 75
+
+            spacing = 20  
+
+            restart_text_rect = pygame.Rect((menu_x + menu_width // 2 - button_width // 2, menu_y + menu_height // 2 - button_height - spacing, button_width, button_height))
+            menu_text_rect = pygame.Rect((menu_x + menu_width // 2 - button_width // 2, menu_y + menu_height // 2 + spacing, button_width, button_height))
+
+            pygame.draw.rect(screen, element_color, restart_text_rect, 2)
+            pygame.draw.rect(screen, element_color, menu_text_rect, 2)
+
+        # Center-align 
+            restart_text_rect.topleft = (menu_x + menu_width // 2 - restart_text_surface.get_width() // 2, menu_y + menu_height // 2 - button_height - spacing)
+            screen.blit(restart_text_surface, restart_text_rect.topleft)
+
+            menu_text_rect.topleft = (menu_x + menu_width // 2 - menu_text_surface.get_width() // 2, menu_y + menu_height // 2 + spacing)
+            screen.blit(menu_text_surface, menu_text_rect.topleft)
+
+            pygame.display.flip()
+
+        # Čekanje igrača da klinu na meni
+            waiting_for_input = True
+            while waiting_for_input:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                    elif event.type == pygame.MOUSEBUTTONDOWN:
+                        pygame.quit()
+                        sys.exit()
+                clock.tick(fps)
+
 
    # Crtanje na ekran
         screen.fill(background_color)
         pygame.draw.circle(screen, player1_color, player1.center, player_radius)
         pygame.draw.circle(screen, player2_color, player2.center, player_radius)
-        pygame.draw.ellipse(screen, (255, 165, 0), ball)  # Orange boja lopte
+        pygame.draw.ellipse(screen, (255, 165, 0), ball)  # Narančasta boja lopte
 
 
 # Crtanje kruga u sredini ekrana
@@ -499,7 +621,7 @@ def start_vs_bot_game():
         pygame.draw.ellipse(screen, (255, 165, 0), ball)  # Narančasta boja lopte
 
 # Prikaz rezultata
-        font = pygame.font.Font(None, 36)
+        font = pygame.font.Font(None, 45)
         score_text = font.render(f"{score_player1} - {score_player2}", True, element_color)
         screen.blit(score_text, (width // 2 - score_text.get_width() // 2, 10))
 
@@ -560,13 +682,12 @@ while True:
 
     screen.fill(black)
 
-    # Pozadine
+    
     if current_screen == "start":
         screen.blit(background_image, (0, 0))
         draw_button("Kreni", screen_width // 2 - 100, 200 + (50 + 20), 200, 50, button_color, white, start_game)
         draw_button("Upute", screen_width // 2 - 100, 200 + 2* (50 + 20), 200, 50, button_color, white, upute)
-        #draw_button("Opcije", screen_width // 2 - 100, 200 + 2 * (50 + 20), 200, 50, button_color, white, options)
-        #draw_button("Postignuća", screen_width // 2 - 100, 200 + 3 * (50 + 20), 200, 50, button_color, white, achievements)
+
         draw_button("Izađi", screen_width // 2 - 100, 200 + 5 * (50 + 20), 200, 50, button_color, white, exit_game)
     elif current_screen == "options":
         screen.blit(game_options_background, (0, 0))
@@ -580,4 +701,3 @@ while True:
         
 
     pygame.display.flip()
-
