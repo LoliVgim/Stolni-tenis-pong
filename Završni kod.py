@@ -512,8 +512,7 @@ def start_vs_bot_game():
         if servis_count == max_servis_count:
             serve_player1, serve_player2 = serve_player2, serve_player1
             servis_count = 0
-
-    # Provjera pobjednika
+  # Provjera pobjednika
         if score_player1 == max_score or score_player2 == max_score:
             winner_text = "Zeleni igrač je pobijedio!" if score_player1 == max_score else "Crveni igrač je pobijedio!"
 
@@ -565,9 +564,27 @@ def start_vs_bot_game():
                         pygame.quit()
                         sys.exit()
                     elif event.type == pygame.MOUSEBUTTONDOWN:
-                        pygame.quit()
-                        sys.exit()
+                        mouse_pos = pygame.mouse.get_pos()
+
+                    # Provjera je li igrač kliknuo restart ili return to menu
+                        if restart_text_rect.collidepoint(mouse_pos):
+                            # Resetiranje rezultata
+                            score_player1 = 0
+                            score_player2 = 0
+                            servis_count = 0
+                            serve_player1 = True
+                            serve_player2 = False
+                            is_serving = False
+                            ball_direction = (0, 0)
+                            ball.x = width // 2 - ball_size // 2
+                            ball.y = height // 2 - ball_size // 2
+                            waiting_for_input = False
+                        elif menu_text_rect.collidepoint(mouse_pos):
+                             pygame.quit()
+                             sys.exit()
                 clock.tick(fps)
+    
+   
 
 
    # Crtanje na ekran
@@ -701,3 +718,4 @@ while True:
         
 
     pygame.display.flip()
+
