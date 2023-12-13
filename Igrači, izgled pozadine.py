@@ -222,7 +222,7 @@ while True:
                         ball.x = width // 2 - ball_size // 2
                         ball.y = height // 2 - ball_size // 2
                         waiting_for_input = False
-                    elif menu_text_rect.collidepoint(mouse_pos):
+                    elif menu_text_rect.collidepoint(mouse_pos): # Dio gdje Gui programeri moraju staviti svoj dio kako bi se korisnik ako želi vratio na glavni  menu
                         pygame.quit()
                         sys.exit()
 
