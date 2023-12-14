@@ -671,9 +671,13 @@ def upute():
     # Upute
     upute_text = [
         "Upute:",
+        " ",
         "1. Pritisnite 'Kreni' za početak igre.",
+        " ",
         "2. Pritisnite '1v1' ili '1 vs Bot' kako biste započeli igru.",
-        "3. Kontrole za lijevog igrača: CRTL + W S A D",
+        " ",
+        "3. Kontrole za lijevog igrača: CRTL + WSAD",
+        " ",
         "4. Kontrole za desnog igrača: Space + strelice"
     ]
 
