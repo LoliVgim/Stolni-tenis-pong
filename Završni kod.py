@@ -757,19 +757,19 @@ while True:
     
     if current_screen == "start":
         screen.blit(background_image, (0, 0))
-        draw_button("Kreni", screen_width // 2 - 100, 200 + (50 + 20), 200, 50, button_color, white, start_game)
-        draw_button("Upute", screen_width // 2 - 100, 200 + 2* (50 + 20), 200, 50, button_color, white, upute)
+        draw_button("Kreni", screen_width // 2 - 100, 200 + (50 + 20), 200, 50, button_color, (100, 100, 100), start_game)
+        draw_button("Upute", screen_width // 2 - 100, 200 + 2* (50 + 20), 200, 50, button_color, (100, 100, 100), upute)
 
-        draw_button("Izađi", screen_width // 2 - 100, 200 + 5 * (50 + 20), 200, 50, button_color, white, exit_game)
+        draw_button("Izađi", screen_width // 2 - 100, 200 + 5 * (50 + 20), 200, 50, button_color, (100, 100, 100), exit_game)
     elif current_screen == "options":
         screen.blit(game_options_background, (0, 0))
-        draw_button("1v1", screen_width // 4 - 100, 400, 200, 50, button_color, white, start_1vs1_game)
-        draw_button("1 vs Bot", 3 * screen_width // 4 - 100, 400, 200, 50, button_color, white, start_vs_bot_game)
-        draw_button("Povratak", screen_width // 2 - 100, 500, 200, 50, button_color, white, return_to_start)
+        draw_button("1v1", screen_width // 4 - 100, 400, 200, 50, button_color, (100, 100, 100), start_1vs1_game)
+        draw_button("1 vs Bot", 3 * screen_width // 4 - 100, 400, 200, 50, button_color, (100, 100, 100), start_vs_bot_game)
+        draw_button("Povratak", screen_width // 2 - 100, 500, 200, 50, button_color, (100, 100, 100), return_to_start)
     elif current_screen == "upute":
         screen.blit(game_instructions_background, (0, 0))
         upute()
-        draw_button("Povratak", screen_width // 2 - 100, 500, 200, 50, button_color, white, return_to_start)
+        draw_button("Povratak", screen_width // 2 - 100, 500, 200, 50, button_color, (100, 100, 100), return_to_start)
         
 
     pygame.display.flip()
