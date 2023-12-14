@@ -7,7 +7,7 @@ pygame.init()
 # Postavke prozora
 screen_width, screen_height = 1280, 720
 screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption("Pong")
+pygame.display.set_caption("ICE Pong")
 
 # Pozadine
 background_image_path = os.path.join("pozadina_start.jpg")
@@ -63,7 +63,7 @@ def start_1vs1_game():
         # Postavke prozora
     width, height = 1280, 720
     screen = pygame.display.set_mode((width, height))
-    pygame.display.set_caption("Pong")
+    pygame.display.set_caption("ICE Pong")
 
     # Postavke igre
     clock = pygame.time.Clock()
@@ -222,12 +222,12 @@ def start_1vs1_game():
             menu_x = (width - menu_width) // 2
             menu_y = (height - menu_height) // 2
 
-            pygame.draw.rect(screen, (128, 0, 128), (menu_x, menu_y, menu_width, menu_height))
+            pygame.draw.rect(screen, (207, 159, 255), (menu_x, menu_y, menu_width, menu_height))
 
         # Prikaz menija
             menu_font = pygame.font.Font(None, 60)
             restart_text_surface = menu_font.render("Restart", True, text_color)
-            menu_text_surface = menu_font.render("Return to Menu", True, text_color)
+            menu_text_surface = menu_font.render("Izlaz", True, text_color)
         
         # Poruka koja pokazuje tko je pobijedio
             winner_font = pygame.font.Font(None, 45)
@@ -241,8 +241,8 @@ def start_1vs1_game():
 
             spacing = 20  
 
-            restart_text_rect = pygame.Rect((menu_x + menu_width // 2 - button_width // 2, menu_y + menu_height // 2 - button_height - spacing, button_width, button_height))
-            menu_text_rect = pygame.Rect((menu_x + menu_width // 2 - button_width // 2, menu_y + menu_height // 2 + spacing, button_width, button_height))
+            restart_text_rect = pygame.Rect((menu_x + menu_width // 2 - button_width // 2, menu_y + menu_height // 2.2 - button_height - spacing, button_width, button_height))
+            menu_text_rect = pygame.Rect((menu_x + menu_width // 2 - button_width // 2, menu_y + menu_height // 2.2 + spacing, button_width, button_height))
 
             pygame.draw.rect(screen, element_color, restart_text_rect, 2)
             pygame.draw.rect(screen, element_color, menu_text_rect, 2)
@@ -353,7 +353,7 @@ def start_vs_bot_game():
     # Postavke prozora
     width, height = 1280, 720
     screen = pygame.display.set_mode((width, height))
-    pygame.display.set_caption("Pong")
+    pygame.display.set_caption("ICE Pong")
     # Postavke igre
     clock = pygame.time.Clock()
     fps = 60
@@ -522,12 +522,12 @@ def start_vs_bot_game():
             menu_x = (width - menu_width) // 2
             menu_y = (height - menu_height) // 2
 
-            pygame.draw.rect(screen, (128, 0, 128), (menu_x, menu_y, menu_width, menu_height))
+            pygame.draw.rect(screen, (207, 159, 255), (menu_x, menu_y, menu_width, menu_height))
 
         # Prikaz menija
             menu_font = pygame.font.Font(None, 60)
             restart_text_surface = menu_font.render("Restart", True, text_color)
-            menu_text_surface = menu_font.render("Return to Menu", True, text_color)
+            menu_text_surface = menu_font.render("Izlaz", True, text_color)
         
         # Poruka koja pokazuje tko je pobijedio
             winner_font = pygame.font.Font(None, 45)
@@ -541,8 +541,8 @@ def start_vs_bot_game():
 
             spacing = 20  
 
-            restart_text_rect = pygame.Rect((menu_x + menu_width // 2 - button_width // 2, menu_y + menu_height // 2 - button_height - spacing, button_width, button_height))
-            menu_text_rect = pygame.Rect((menu_x + menu_width // 2 - button_width // 2, menu_y + menu_height // 2 + spacing, button_width, button_height))
+            restart_text_rect = pygame.Rect((menu_x + menu_width // 2 - button_width // 2, menu_y + menu_height // 2.2 - button_height - spacing, button_width, button_height))
+            menu_text_rect = pygame.Rect((menu_x + menu_width // 2 - button_width // 2, menu_y + menu_height // 2.2 + spacing, button_width, button_height))
 
             pygame.draw.rect(screen, element_color, restart_text_rect, 2)
             pygame.draw.rect(screen, element_color, menu_text_rect, 2)
