@@ -10,15 +10,16 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("ICE Pong")
 
 # Pozadine
-background_image_path = os.path.join("pozadina_start.jpg")
+current_dir = os.path.dirname(__file__)
+background_image_path = os.path.join(current_dir, "pozadina_start.jpg")
 background_image = pygame.image.load(background_image_path)
 background_image = pygame.transform.scale(background_image, (screen_width, screen_height))
 
-game_options_background_path = os.path.join("pozadina_options.jpg")
+game_options_background_path = os.path.join(current_dir, "pozadina_options.jpg")
 game_options_background = pygame.image.load(game_options_background_path)
 game_options_background = pygame.transform.scale(game_options_background, (screen_width, screen_height))
 
-game_instructions_background_path = os.path.join("pozadina_upute.jpg")
+game_instructions_background_path = os.path.join(current_dir, "pozadina_upute.jpg")
 game_instructions_background = pygame.image.load(game_instructions_background_path)
 game_instructions_background = pygame.transform.scale(game_instructions_background, (screen_width, screen_height))
 
@@ -29,6 +30,7 @@ current_screen = "start"
 black = (0, 0, 0)
 white = (255, 255, 255)
 button_color = (50, 50, 50)
+hover_color =  (0, 0, 139) # tamno plava boja kad s mjišem prijeđemo preko gumba
 
 # Font
 font = pygame.font.SysFont("gillsansultracondensed", 36)
@@ -52,11 +54,22 @@ def draw_button(text, x, y, width, height, button_color, hover_color, action=Non
 
     draw_text(text, x + width // 2, y + height // 2)
 
+# Učitavanje zvukova
+pygame.mixer.music.load(os.path.join(current_dir, "background_music.mp3"))  # Zamijenite "background_music.mp3" s datotekom vaše glazbe
+hit_sound = pygame.mixer.Sound(os.path.join(current_dir, "hit_sound.mp3"))  # Zamijenite "hit_sound.wav" s datotekom zvuka za udarac
+
+# Postavke za reprodukciju glazbe
+pygame.mixer.music.set_volume(0.5)  # Prilagodite glasnoću prema potrebi
+pygame.mixer.music.play(-1)  # -1 označava ponavljanje glazbe
 
 # Akcije gumba
 def start_game():
     global current_screen
     current_screen = "options"
+
+def return_to_start():
+    global current_screen
+    current_screen = "start"
 
 # Igranje igrač protiv igrača
 def start_1vs1_game():
@@ -166,6 +179,7 @@ def start_1vs1_game():
 
         # Odbijanje lopte od igrača 1
             if ball.colliderect(player1):
+                hit_sound.play()
                 ball_direction = (abs(ball_direction[0]), ball_direction[1])
                 if player1.x < width // 2:
                     ball.x = player1.right + 1
@@ -174,6 +188,7 @@ def start_1vs1_game():
 
         # Odbijanje lopte od igrača 2
             if ball.colliderect(player2):
+                hit_sound.play()
                 ball_direction = (-abs(ball_direction[0]), ball_direction[1])
                 if player2.x < width // 2:
                     ball.x = player2.right + 1
@@ -280,8 +295,32 @@ def start_1vs1_game():
                             ball.y = height // 2 - ball_size // 2
                             waiting_for_input = False
                         elif menu_text_rect.collidepoint(mouse_pos):
-                             pygame.quit()
-                             sys.exit()
+                            while True:
+                                for event in pygame.event.get():
+                                    if event.type == pygame.QUIT:
+                                        pygame.quit()
+                                        sys.exit()
+
+                                screen.fill(black)
+
+    
+                                if current_screen == "start":
+                                    screen.blit(background_image, (0, 0))
+                                    draw_button("Kreni", screen_width // 2 - 100, 200 + (50 + 20), 200, 50, button_color,  hover_color, start_game)
+                                    draw_button("Upute", screen_width // 2 - 100, 200 + 2* (50 + 20), 200, 50, button_color,  hover_color, upute)
+                                    draw_button("Izađi", screen_width // 2 - 100, 200 + 5 * (50 + 20), 200, 50, button_color,  hover_color, exit_game)
+                                elif current_screen == "options":
+                                    screen.blit(game_options_background, (0, 0))
+                                    draw_button("1v1", screen_width // 4 - 100, 400, 200, 50, button_color,  hover_color, start_1vs1_game)
+                                    draw_button("1 vs Bot", 3 * screen_width // 4 - 100, 400, 200, 50, button_color,  hover_color, start_vs_bot_game)
+                                    draw_button("Povratak", screen_width // 2 - 100, 500, 200, 50, button_color,  hover_color, return_to_start)
+                                elif current_screen == "upute":
+                                    screen.blit(game_instructions_background, (0, 0))
+                                    upute()
+                                    draw_button("Povratak", screen_width // 2 - 100, 500, 200, 50, button_color,  hover_color, return_to_start)
+                                pygame.display.flip()
+                           
+
                 clock.tick(fps)
     
     
@@ -294,12 +333,12 @@ def start_1vs1_game():
         pygame.draw.ellipse(screen, (255, 165, 0), ball)  # Naranèasta boja lopte
 
 # Crtanje kruga u sredini ekrana
-        center_circle_radius = height // 4  # Half of the vertical line
+        center_circle_radius = height // 4  
         center_circle_center = (width // 2, height // 2)
         pygame.draw.circle(screen, element_color, center_circle_center, center_circle_radius, 5)
 
 # Crtanje paralelnih linija koje izlaze iz kruga
-        line_length = center_circle_radius * 2  # Full length of the vertical line
+        line_length = center_circle_radius * 2  
         line_start = (center_circle_center[0], center_circle_center[1] - center_circle_radius)
         line_end = (center_circle_center[0], center_circle_center[1] + center_circle_radius)
         pygame.draw.line(screen, element_color, line_start, line_end, 5)
@@ -332,7 +371,7 @@ def start_1vs1_game():
         pygame.draw.circle(screen, player2_color, player2.center, player_radius)
 
 # Crtanje lopte
-        pygame.draw.ellipse(screen, (255, 165, 0), ball)  # Orange boja lopte
+        pygame.draw.ellipse(screen, (255, 165, 0), ball)  # Narančasta boja lopte
 
 # Prikaz rezultata
         font = pygame.font.Font(None, 45)
@@ -455,6 +494,7 @@ def start_vs_bot_game():
 
     # Odbijanje lopte od igrača 1
             if ball.colliderect(player1):
+                hit_sound.play()
                 ball_direction = (abs(ball_direction[0]), ball_direction[1])
                 if player1.x < width // 2:
                     ball.x = player1.right + 1
@@ -463,6 +503,7 @@ def start_vs_bot_game():
 
     # Odbijanje lopte od igrača 2
             if ball.colliderect(player2):
+                hit_sound.play()
                 ball_direction = (-abs(ball_direction[0]), ball_direction[1])
                 if player2.x < width // 2:
                     ball.x = player2.right + 1
@@ -580,8 +621,31 @@ def start_vs_bot_game():
                             ball.y = height // 2 - ball_size // 2
                             waiting_for_input = False
                         elif menu_text_rect.collidepoint(mouse_pos):
-                             pygame.quit()
-                             sys.exit()
+                            while True:
+                                for event in pygame.event.get():
+                                    if event.type == pygame.QUIT:
+                                        pygame.quit()
+                                        sys.exit()
+
+                                screen.fill(black)
+
+    
+                                if current_screen == "start":
+                                    screen.blit(background_image, (0, 0))
+                                    draw_button("Kreni", screen_width // 2 - 100, 200 + (50 + 20), 200, 50, button_color,  hover_color, start_game)
+                                    draw_button("Upute", screen_width // 2 - 100, 200 + 2* (50 + 20), 200, 50, button_color,  hover_color, upute)
+                                    draw_button("Izađi", screen_width // 2 - 100, 200 + 5 * (50 + 20), 200, 50, button_color,  hover_color, exit_game)
+                                elif current_screen == "options":
+                                    screen.blit(game_options_background, (0, 0))
+                                    draw_button("1v1", screen_width // 4 - 100, 400, 200, 50, button_color,  hover_color, start_1vs1_game)
+                                    draw_button("1 vs Bot", 3 * screen_width // 4 - 100, 400, 200, 50, button_color,  hover_color, start_vs_bot_game)
+                                    draw_button("Povratak", screen_width // 2 - 100, 500, 200, 50, button_color,  hover_color, return_to_start)
+                                elif current_screen == "upute":
+                                    screen.blit(game_instructions_background, (0, 0))
+                                    upute()
+                                    draw_button("Povratak", screen_width // 2 - 100, 500, 200, 50, button_color,  hover_color, return_to_start)
+                                pygame.display.flip()
+                            
                 clock.tick(fps)
     
    
@@ -706,20 +770,23 @@ while True:
     
     if current_screen == "start":
         screen.blit(background_image, (0, 0))
-        draw_button("Kreni", screen_width // 2 - 100, 200 + (50 + 20), 200, 50, button_color, (100, 100, 100), start_game)
-        draw_button("Upute", screen_width // 2 - 100, 200 + 2* (50 + 20), 200, 50, button_color, (100, 100, 100), upute)
+        draw_button("Kreni", screen_width // 2 - 100, 200 + (50 + 20), 200, 50, button_color,  hover_color, start_game)
+        draw_button("Upute", screen_width // 2 - 100, 200 + 2* (50 + 20), 200, 50, button_color,  hover_color, upute)
 
-        draw_button("Izađi", screen_width // 2 - 100, 200 + 5 * (50 + 20), 200, 50, button_color, (100, 100, 100), exit_game)
+        draw_button("Izađi", screen_width // 2 - 100, 200 + 5 * (50 + 20), 200, 50, button_color,  hover_color, exit_game)
     elif current_screen == "options":
         screen.blit(game_options_background, (0, 0))
-        draw_button("1v1", screen_width // 4 - 100, 400, 200, 50, button_color, (100, 100, 100), start_1vs1_game)
-        draw_button("1 vs Bot", 3 * screen_width // 4 - 100, 400, 200, 50, button_color, (100, 100, 100), start_vs_bot_game)
-        draw_button("Povratak", screen_width // 2 - 100, 500, 200, 50, button_color, (100, 100, 100), return_to_start)
+        draw_button("1v1", screen_width // 4 - 100, 400, 200, 50, button_color,  hover_color, start_1vs1_game)
+        draw_button("1 vs Bot", 3 * screen_width // 4 - 100, 400, 200, 50, button_color,  hover_color, start_vs_bot_game)
+        draw_button("Povratak", screen_width // 2 - 100, 500, 200, 50, button_color,  hover_color, return_to_start)
     elif current_screen == "upute":
         screen.blit(game_instructions_background, (0, 0))
         upute()
-        draw_button("Povratak", screen_width // 2 - 100, 500, 200, 50, button_color, (100, 100, 100), return_to_start)
+        draw_button("Povratak", screen_width // 2 - 100, 500, 200, 50, button_color,  hover_color, return_to_start)
         
 
     pygame.display.flip()
+
+
+
 
